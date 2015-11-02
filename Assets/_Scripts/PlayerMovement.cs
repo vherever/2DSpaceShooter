@@ -5,6 +5,8 @@ public class PlayerMovement : MonoBehaviour {
 	public float maxSpeed = 5f;
 	public float rotSpeed = 180f;
 
+	float shipBoundaryRadius = 0.5f;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -33,8 +35,31 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 pos = transform.position;
 
 		Vector3 velocity = new Vector3(0, Input.GetAxis ("Vertical") * maxSpeed * Time.deltaTime, 0);
+
 		pos += rot * velocity;
 
+		// Restrict the plyer to the camera's boundaries
+		// Vertical 
+		if(pos.y + shipBoundaryRadius > Camera.main.orthographicSize) {
+			pos.y = Camera.main.orthographicSize - shipBoundaryRadius;
+		}
+		if(pos.y - shipBoundaryRadius < -Camera.main.orthographicSize) {
+			pos.y = -Camera.main.orthographicSize + shipBoundaryRadius;
+		}
+
+		// Calculate the orthographic width based on the screen ratio
+		float screenRatio = (float)Screen.width / (float)Screen.height;
+		float widthOrtho = Camera.main.orthographicSize * screenRatio;
+
+		// Horizontal
+		if(pos.x + shipBoundaryRadius > widthOrtho) {
+			pos.x = widthOrtho - shipBoundaryRadius;
+		}
+		if(pos.x - shipBoundaryRadius < -widthOrtho) {
+			pos.x = -widthOrtho + shipBoundaryRadius;
+		}
+
+		// Update position
 		transform.position = pos;
 
 	}
