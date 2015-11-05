@@ -5,6 +5,7 @@ public class DamageHandler : MonoBehaviour {
 
 	public int health = 1;
 
+	public float invulnPeriod = 0;
 	float invulnTimer = 0;
 	int correctLayer;
 
@@ -16,7 +17,7 @@ public class DamageHandler : MonoBehaviour {
 		Debug.Log ("Trigger!");
 
 		health --;
-		invulnTimer = 0.25f;
+		invulnTimer = invulnPeriod;
 		gameObject.layer = 10;
 	}
 
